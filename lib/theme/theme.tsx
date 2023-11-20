@@ -89,9 +89,8 @@ const theme = createTheme({
 			color: 'primary',
 		},
 		muted: {
-			fontFamily: 'LatoLatin-Regular',
 			fontSize: 14,
-			color: 'grey',
+			color: 'black',
 		},
 	},
 	buttonVariants: {
@@ -108,7 +107,6 @@ const theme = createTheme({
 			borderWidth: StyleSheet.hairlineWidth,
 			borderRadius: 8,
 			height: 35,
-			fontFamily: 'LatoLatin-Regular',
 			fontSize: 16,
 			color: palette.purpleblack,
 			padding: 6,
@@ -119,7 +117,6 @@ const theme = createTheme({
 		textArea: {
 			borderBottomColor: palette.primary,
 			borderBottomWidth: 1,
-			fontFamily: 'LatoLatin-Regular',
 			fontSize: 16,
 			color: palette.purpleblack,
 			padding: 0,

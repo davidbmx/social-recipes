@@ -4,7 +4,7 @@ import API from './API';
 type TBodyUser = Pick<IUser, 'email' | 'password'>;
 
 export const signIn = async (body: TBodyUser): Promise<IAuth> => {
-	return await API.post('/auth/', body).then(response => response.data);
+	return await API.post('/auth', body).then(response => response.data);
 };
 
 export const refreshToken = async (
