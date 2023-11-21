@@ -21,7 +21,7 @@ export const Input = ({ label, optional, error, containerBoxStyle, ...rest }: Pr
 			{label && (
 				<Text
 					variant={'labels'}
-					color={focused ? 'jordyblue.700' : 'jordyblue.200'}
+					color={focused ? 'jordyblue.700' : 'jordyblue.500'}
 					marginBottom={'s'}
 				>
 					{label} {optional ? <Text variant={'body'}>(opcional)</Text> : ''}
@@ -29,13 +29,13 @@ export const Input = ({ label, optional, error, containerBoxStyle, ...rest }: Pr
 			)}
 			<TextInput
 				{...rest}
-				placeholderTextColor={theme.colors['jordyblue.200']}
+				placeholderTextColor={theme.colors['jordyblue.500']}
 				style={[theme.textInputVariants.normal, focused && theme.textInputVariants.focus]}
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
 			/>
 			{error ? (
-				<Text variant={'muted'} color={'scarlet.700'}>
+				<Text variant={'muted'} color={'scarlet.700'} marginTop="s">
 					{error}
 				</Text>
 			) : null}

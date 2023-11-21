@@ -1,18 +1,23 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Redirect, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
 
 import { useAuthContext } from '../../lib/providers';
 import Text from '../../lib/theme/Text';
+import IconFontAwesome from '../../components/FontAwsome';
+import theme, { Theme } from '../../lib/theme/theme';
+import Touchable from '../../lib/theme/Touchable';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
-function TabBarIcon(props: {
+function TabBarIcon({
+	color,
+	...rest
+}: {
 	name: React.ComponentProps<typeof FontAwesome>['name'];
 	color: string;
 }) {
-	return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+	return <IconFontAwesome size={28} style={{ marginBottom: -5, color }} {...rest} />;
 }
 
 export default function TabLayout() {
@@ -27,32 +32,38 @@ export default function TabLayout() {
 	}
 
 	return (
-		<Tabs screenOptions={{}}>
+		<Tabs
+			screenOptions={{
+				tabBarActiveTintColor: theme.colors['jordyblue.700'],
+				tabBarInactiveTintColor: theme.colors['jordyblue.300'],
+			}}
+		>
 			<Tabs.Screen
 				name="index"
 				options={{
-					title: 'Tab One',
-					tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-					headerRight: () => (
-						<Link href="/modal" asChild>
-							<Pressable>
-								{({ pressed }) => (
-									<FontAwesome
-										name="info-circle"
-										size={25}
-										style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-									/>
-								)}
-							</Pressable>
-						</Link>
-					),
+					title: '',
+					tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
 				}}
 			/>
 			<Tabs.Screen
-				name="two"
+				name="search"
 				options={{
-					title: 'Tab Two',
-					tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+					title: '',
+					tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="notifications"
+				options={{
+					title: '',
+					tabBarIcon: ({ color }) => <TabBarIcon name="bell" color={color} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="profile"
+				options={{
+					title: '',
+					tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
 				}}
 			/>
 		</Tabs>

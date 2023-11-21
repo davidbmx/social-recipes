@@ -1,28 +1,161 @@
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import Container from '../components/Container';
 import Box from '../lib/theme/Box';
 import Button from '../lib/theme/Button';
 import Text from '../lib/theme/Text';
 import Touchable from '../lib/theme/Touchable';
+import { useState } from 'react';
+import { useAuthContext } from '../lib/providers';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import Loading from '../components/Loading';
+import { Image, Keyboard } from 'react-native';
+import { Input } from '../components/Input';
+import { SignupFormSchema, signupFormSchema } from '../lib/schemas';
+import { signUp } from '../lib/api';
+import { IError } from '../lib/interfaces/errors';
+import ContainerForm from '../components/ContainerForm';
+const SIGN_UP = require('../assets/images/sign_up.png');
 
-export default function AuthPage() {
+export default function SignUpScreen() {
+	const [loading, setLoading] = useState(false);
+	const [errorLogin, setErrorLogin] = useState<string | undefined>(undefined);
+	const { storeAuth } = useAuthContext();
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+		setError,
+		setValue,
+	} = useForm<SignupFormSchema>({
+		mode: 'onSubmit',
+		reValidateMode: 'onChange',
+		resolver: yupResolver(signupFormSchema),
+		criteriaMode: 'firstError',
+		defaultValues: {
+			email: '',
+			password: '',
+		},
+	});
+
+	const onSubmit = (values: SignupFormSchema) => {
+		Keyboard.dismiss();
+		setLoading(true);
+		setErrorLogin(undefined);
+		signUp({ ...values })
+			.then(authData => {
+				storeAuth(authData);
+				router.replace('/(tabs)');
+			})
+			.catch((error: IError) => {
+				if (error.detail) {
+					setErrorLogin(error.detail);
+				}
+				if (error.fields) {
+					if (error.fields.email) {
+						setError('email', {
+							type: 'validate',
+							message: 'Correo ingresado ya se encuentra registrado.',
+						});
+					}
+					if (error.fields.username) {
+						setError('username', {
+							type: 'validate',
+							message: 'Username ingresado ya se encuentra registrado.',
+						});
+					}
+					if (error.fields.password) {
+						setError('password', {
+							type: 'validate',
+							message: error.fields.password[0],
+						});
+					}
+					setValue('password', '');
+				}
+			})
+			.finally(() => setLoading(false));
+	};
+
 	return (
 		<Container>
-			<Box flex={2}></Box>
-			<Box flex={1} alignItems={'center'}>
-				<Text variant={'header'}>Bienvenido a Social Recepies</Text>
-				<Text variant={'subheader'}>
-					Aquí vas a poder compartir tus recetas favorias o encontrarlas
-				</Text>
-				<Button variant={'primary'} padding={'s'} width={'100%'} marginVertical={'m'}>
-					<Text variant={'buttonPrimary'}>Ingresar</Text>
-				</Button>
-				<Link href="/sign-in" asChild>
-					<Touchable>
-						<Text variant={'titleMedium'}>¿Ya tienes cuenta? inicia sesión</Text>
-					</Touchable>
-				</Link>
-			</Box>
+			<ContainerForm>
+				<Box flex={1} justifyContent={'center'}>
+					<Loading loading={loading} />
+					<Box>
+						<Image source={SIGN_UP} style={{ width: '100%', height: 300 }} resizeMode={'contain'} />
+					</Box>
+					<Box marginTop={'s'}>
+						<Controller
+							control={control}
+							name={'username'}
+							render={({ field: { value, onChange } }) => (
+								<Input
+									label={'Username:'}
+									error={errors.username?.message}
+									keyboardType={'default'}
+									textContentType={'username'}
+									autoCapitalize={'none'}
+									maxLength={150}
+									value={value}
+									onChangeText={onChange}
+								/>
+							)}
+						/>
+					</Box>
+					<Box marginTop={'s'}>
+						<Controller
+							control={control}
+							name={'email'}
+							render={({ field: { value, onChange } }) => (
+								<Input
+									label={'Correo:'}
+									error={errors.email?.message}
+									keyboardType={'email-address'}
+									textContentType={'emailAddress'}
+									autoCapitalize={'none'}
+									maxLength={150}
+									value={value}
+									onChangeText={onChange}
+								/>
+							)}
+						/>
+					</Box>
+					<Box marginTop={'m'}>
+						<Controller
+							control={control}
+							name={'password'}
+							render={({ field: { value, onChange } }) => (
+								<Input
+									label={'Contraseña:'}
+									error={errors.password?.message}
+									keyboardType={'default'}
+									textContentType={'password'}
+									secureTextEntry={true}
+									value={value}
+									onChangeText={onChange}
+								/>
+							)}
+						/>
+					</Box>
+					<Box marginTop={'m'}>
+						{errorLogin ? (
+							<Text variant={'body'} color={'error'} marginBottom={'m'}>
+								{errorLogin}
+							</Text>
+						) : null}
+						<Button variant={'primary'} onPress={handleSubmit(onSubmit)} padding={'s'}>
+							<Text variant={'buttonPrimary'}>Registrarse</Text>
+						</Button>
+						<Link href="/sign-in" asChild>
+							<Touchable marginTop={'m'}>
+								<Text variant={'body'} textAlign={'center'}>
+									¿Ya tienes una cuenta? Inicia sesión
+								</Text>
+							</Touchable>
+						</Link>
+					</Box>
+				</Box>
+			</ContainerForm>
 		</Container>
 	);
 }

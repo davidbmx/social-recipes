@@ -186,7 +186,7 @@ const theme = createTheme({
 	},
 	textInputVariants: {
 		normal: {
-			borderColor: palette.jordyblue[200],
+			borderColor: palette.jordyblue[500],
 			borderWidth: StyleSheet.hairlineWidth,
 			borderRadius: 8,
 			height: 35,
@@ -198,7 +198,7 @@ const theme = createTheme({
 			borderColor: palette.jordyblue[700],
 		},
 		textArea: {
-			borderBottomColor: palette.jordyblue[200],
+			borderBottomColor: palette.jordyblue[500],
 			borderBottomWidth: 1,
 			fontSize: 16,
 			color: palette.jordyblue[700],

@@ -36,7 +36,7 @@ API.interceptors.response.use(
 		// 	// navigate('Auth');
 		// }
 
-		let message = 'Ooops! Something is wrong!';
+		console.log(error.response);
 		const errorFormatted: IError = {
 			detail: error.response?.data?.detail ? error.response?.data.detail : undefined,
 			fields: !error.response?.data?.detail

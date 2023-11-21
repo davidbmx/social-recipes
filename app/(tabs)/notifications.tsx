@@ -1,10 +1,10 @@
 import Container from '../../components/Container';
 import Text from '../../lib/theme/Text';
 
-export default function HomeScreen() {
+export default function NotificationsScreen() {
 	return (
 		<Container>
-			<Text>home</Text>
+			<Text>profile page</Text>
 		</Container>
 	);
 }

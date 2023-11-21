@@ -10,14 +10,17 @@ import Touchable from '../lib/theme/Touchable';
 import { useState } from 'react';
 import { AuthFormSchema, authFormSchema } from '../lib/schemas';
 import { Input } from '../components/Input';
-import { SafeAreaView } from 'react-native';
+import { Image, Keyboard, SafeAreaView } from 'react-native';
 import { signIn } from '../lib/api';
 import Loading from '../components/Loading';
 import { API_URL } from '@env';
 import { IError } from '../lib/interfaces/errors';
 import { useAuthContext } from '../lib/providers';
+import ContainerForm from '../components/ContainerForm';
+const AUTH_IMAGE = require('../assets/images/cooking.png');
+const SIGN_IN = require('../assets/images/sign-in.png');
 
-export default function AuthPage() {
+export default function AuthScreen() {
 	const [showAuth, setShowAuth] = useState(true);
 	return (
 		<Container>
@@ -30,10 +33,18 @@ const AuthInformation = ({ onPress }: { onPress: () => void }) => {
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
 			<Container>
-				<Box flex={2}></Box>
+				<Box flex={1} justifyContent={'center'}>
+					<Image
+						source={AUTH_IMAGE}
+						style={{ width: '100%', height: 300 }}
+						resizeMode={'contain'}
+					/>
+				</Box>
 				<Box flex={1} alignItems={'center'}>
-					<Text variant={'header'}>Bienvenido a Social Recepies</Text>
-					<Text variant={'subheader'}>
+					<Text variant={'header'} textAlign={'center'}>
+						Bienvenido a Social Recepies
+					</Text>
+					<Text variant={'titleMedium'} textAlign={'center'} marginBottom={'m'}>
 						Aquí vas a poder compartir tus recetas favorias o encontrarlas
 					</Text>
 					<Button
@@ -63,6 +74,7 @@ const AuthForm = () => {
 	const {
 		control,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm<AuthFormSchema>({
 		mode: 'onSubmit',
@@ -76,9 +88,10 @@ const AuthForm = () => {
 	});
 
 	const onSubmit = (values: AuthFormSchema) => {
+		Keyboard.dismiss();
 		setLoading(true);
 		setErrorLogin(undefined);
-		signIn({ ...values })
+		signIn(values)
 			.then(authData => {
 				storeAuth(authData);
 				router.replace('/(tabs)');
@@ -87,65 +100,73 @@ const AuthForm = () => {
 				if (error.detail) {
 					setErrorLogin(error.detail);
 				}
+				setValue('password', '');
 			})
 			.finally(() => setLoading(false));
 	};
 
 	return (
 		<Box flex={1} justifyContent={'center'}>
-			<Loading loading={loading} />
-			<Box marginTop={'s'}>
-				<Controller
-					control={control}
-					name={'email'}
-					render={({ field: { value, onChange } }) => (
-						<Input
-							label={'Correo:'}
-							error={errors.email?.message}
-							keyboardType={'email-address'}
-							textContentType={'emailAddress'}
-							autoCapitalize={'none'}
-							maxLength={150}
-							value={value}
-							onChangeText={onChange}
+			<ContainerForm>
+				<Box flex={1} justifyContent={'center'}>
+					<Loading loading={loading} />
+					<Box>
+						<Image source={SIGN_IN} style={{ width: '100%', height: 300 }} resizeMode={'contain'} />
+					</Box>
+					<Box marginTop={'s'}>
+						<Controller
+							control={control}
+							name={'email'}
+							render={({ field: { value, onChange } }) => (
+								<Input
+									label={'Correo:'}
+									error={errors.email?.message}
+									keyboardType={'email-address'}
+									textContentType={'emailAddress'}
+									autoCapitalize={'none'}
+									maxLength={150}
+									value={value}
+									onChangeText={onChange}
+								/>
+							)}
 						/>
-					)}
-				/>
-			</Box>
-			<Box marginTop={'s'}>
-				<Controller
-					control={control}
-					name={'password'}
-					render={({ field: { value, onChange } }) => (
-						<Input
-							label={'Contraseña:'}
-							error={errors.password?.message}
-							keyboardType={'default'}
-							textContentType={'password'}
-							secureTextEntry={true}
-							value={value}
-							onChangeText={onChange}
+					</Box>
+					<Box marginTop={'m'}>
+						<Controller
+							control={control}
+							name={'password'}
+							render={({ field: { value, onChange } }) => (
+								<Input
+									label={'Contraseña:'}
+									error={errors.password?.message}
+									keyboardType={'default'}
+									textContentType={'password'}
+									secureTextEntry={true}
+									value={value}
+									onChangeText={onChange}
+								/>
+							)}
 						/>
-					)}
-				/>
-			</Box>
-			<Box marginTop={'m'}>
-				{errorLogin ? (
-					<Text variant={'body'} color={'error'} marginBottom={'m'}>
-						{errorLogin}
-					</Text>
-				) : null}
-				<Button variant={'primary'} onPress={handleSubmit(onSubmit)} padding={'s'}>
-					<Text variant={'buttonPrimary'}>Ingresar</Text>
-				</Button>
-				<Link href="/sign-up" asChild>
-					<Touchable marginTop={'m'}>
-						<Text variant={'body'} textAlign={'center'}>
-							¿No tienes una cuenta? Crear nueva cuenta
-						</Text>
-					</Touchable>
-				</Link>
-			</Box>
+					</Box>
+					<Box marginTop={'m'}>
+						{errorLogin ? (
+							<Text variant={'body'} color={'error'} marginBottom={'m'}>
+								{errorLogin}
+							</Text>
+						) : null}
+						<Button variant={'primary'} onPress={handleSubmit(onSubmit)} padding={'s'}>
+							<Text variant={'buttonPrimary'}>Ingresar</Text>
+						</Button>
+						<Link href="/sign-up" asChild>
+							<Touchable marginTop={'m'}>
+								<Text variant={'body'} textAlign={'center'}>
+									¿No tienes una cuenta? Crear nueva cuenta
+								</Text>
+							</Touchable>
+						</Link>
+					</Box>
+				</Box>
+			</ContainerForm>
 		</Box>
 	);
 };

@@ -1,10 +1,10 @@
 import Container from '../../components/Container';
 import Text from '../../lib/theme/Text';
 
-export default function TabTwoScreen() {
+export default function ProfileScreen() {
 	return (
 		<Container>
-			<Text>Tab Two</Text>
+			<Text>profile page</Text>
 		</Container>
 	);
 }
