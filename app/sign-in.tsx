@@ -13,10 +13,10 @@ import { Input } from '../components/Input';
 import { Image, Keyboard, SafeAreaView } from 'react-native';
 import { signIn } from '../lib/api';
 import Loading from '../components/Loading';
-import { API_URL } from '@env';
 import { IError } from '../lib/interfaces/errors';
 import { useAuthContext } from '../lib/providers';
 import ContainerForm from '../components/ContainerForm';
+import i18next from '../locales/i18next';
 const AUTH_IMAGE = require('../assets/images/cooking.png');
 const SIGN_IN = require('../assets/images/sign-in.png');
 
@@ -42,10 +42,10 @@ const AuthInformation = ({ onPress }: { onPress: () => void }) => {
 				</Box>
 				<Box flex={1} alignItems={'center'}>
 					<Text variant={'header'} textAlign={'center'}>
-						Bienvenido a Social Recepies
+						{i18next.t('signin.welcome')}
 					</Text>
 					<Text variant={'titleMedium'} textAlign={'center'} marginBottom={'m'}>
-						Aquí vas a poder compartir tus recetas favorias o encontrarlas
+						{i18next.t('signin.welcome-detail')}
 					</Text>
 					<Button
 						variant={'primary'}
@@ -54,11 +54,11 @@ const AuthInformation = ({ onPress }: { onPress: () => void }) => {
 						marginVertical={'m'}
 						onPress={() => onPress()}
 					>
-						<Text variant={'buttonPrimary'}>Ingresar</Text>
+						<Text variant={'buttonPrimary'}>{i18next.t('signin.button-in')}</Text>
 					</Button>
 					<Link href="/sign-up" asChild>
 						<Touchable>
-							<Text variant={'titleMedium'}>Crear nueva cuenta</Text>
+							<Text variant={'titleMedium'}>{i18next.t('signin.create-account')}</Text>
 						</Touchable>
 					</Link>
 				</Box>
@@ -98,7 +98,7 @@ const AuthForm = () => {
 			})
 			.catch((error: IError) => {
 				if (error.detail) {
-					setErrorLogin(error.detail);
+					setErrorLogin(i18next.t('signin.unauthorized'));
 				}
 				setValue('password', '');
 			})
@@ -119,7 +119,7 @@ const AuthForm = () => {
 							name={'email'}
 							render={({ field: { value, onChange } }) => (
 								<Input
-									label={'Correo:'}
+									label={i18next.t('labels.email')}
 									error={errors.email?.message}
 									keyboardType={'email-address'}
 									textContentType={'emailAddress'}
@@ -137,7 +137,7 @@ const AuthForm = () => {
 							name={'password'}
 							render={({ field: { value, onChange } }) => (
 								<Input
-									label={'Contraseña:'}
+									label={i18next.t('labels.password')}
 									error={errors.password?.message}
 									keyboardType={'default'}
 									textContentType={'password'}
@@ -155,12 +155,12 @@ const AuthForm = () => {
 							</Text>
 						) : null}
 						<Button variant={'primary'} onPress={handleSubmit(onSubmit)} padding={'s'}>
-							<Text variant={'buttonPrimary'}>Ingresar</Text>
+							<Text variant={'buttonPrimary'}>{i18next.t('signin.button-in')}</Text>
 						</Button>
 						<Link href="/sign-up" asChild>
 							<Touchable marginTop={'m'}>
 								<Text variant={'body'} textAlign={'center'}>
-									¿No tienes una cuenta? Crear nueva cuenta
+									{i18next.t('signin.no-account')}
 								</Text>
 							</Touchable>
 						</Link>

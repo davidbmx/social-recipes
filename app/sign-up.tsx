@@ -15,6 +15,7 @@ import { SignupFormSchema, signupFormSchema } from '../lib/schemas';
 import { signUp } from '../lib/api';
 import { IError } from '../lib/interfaces/errors';
 import ContainerForm from '../components/ContainerForm';
+import i18next from 'i18next';
 const SIGN_UP = require('../assets/images/sign_up.png');
 
 export default function SignUpScreen() {
@@ -90,7 +91,7 @@ export default function SignUpScreen() {
 							name={'username'}
 							render={({ field: { value, onChange } }) => (
 								<Input
-									label={'Username:'}
+									label={i18next.t('labels.username')}
 									error={errors.username?.message}
 									keyboardType={'default'}
 									textContentType={'username'}
@@ -108,7 +109,7 @@ export default function SignUpScreen() {
 							name={'email'}
 							render={({ field: { value, onChange } }) => (
 								<Input
-									label={'Correo:'}
+									label={i18next.t('labels.email')}
 									error={errors.email?.message}
 									keyboardType={'email-address'}
 									textContentType={'emailAddress'}
@@ -126,7 +127,7 @@ export default function SignUpScreen() {
 							name={'password'}
 							render={({ field: { value, onChange } }) => (
 								<Input
-									label={'Contraseña:'}
+									label={i18next.t('labels.password')}
 									error={errors.password?.message}
 									keyboardType={'default'}
 									textContentType={'password'}
@@ -144,12 +145,12 @@ export default function SignUpScreen() {
 							</Text>
 						) : null}
 						<Button variant={'primary'} onPress={handleSubmit(onSubmit)} padding={'s'}>
-							<Text variant={'buttonPrimary'}>Registrarse</Text>
+							<Text variant={'buttonPrimary'}>{i18next.t('signin.sign-up')}</Text>
 						</Button>
 						<Link href="/sign-in" asChild>
 							<Touchable marginTop={'m'}>
 								<Text variant={'body'} textAlign={'center'}>
-									¿Ya tienes una cuenta? Inicia sesión
+									{i18next.t('signin.has-account')}
 								</Text>
 							</Touchable>
 						</Link>

@@ -1,6 +1,9 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { IAuth, IAuthSession, IUser } from '../interfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import API from '../api/API';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import { IError } from '../interfaces/errors';
 
 interface IContext {
 	isAuthenticated: boolean;
@@ -10,6 +13,7 @@ interface IContext {
 	signOut: () => void;
 }
 
+let refeching = false;
 const AuthContext = createContext<IContext | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -59,6 +63,64 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			}));
 		});
 	}, []);
+
+	useEffect(() => {
+		const requestInterceptor = API.interceptors.request.use(
+			(config: AxiosRequestConfig) => {
+				if (state.auth?.access && config.headers) {
+					config.headers.Authorization = `Bearer ${state.auth.access}`;
+				}
+				return Promise.resolve(config) as any;
+			},
+			() => {
+				//
+			},
+		);
+
+		const responseInterceptor = API.interceptors.response.use(
+			response => {
+				return response;
+			},
+			async (error: AxiosError<IError>) => {
+				// UnauthorizedError
+				const prevRequest = error.config as any;
+				if (
+					error.response?.status === 401 &&
+					!refeching &&
+					state.auth?.refresh &&
+					error.response.data.code !== 'token_not_valid'
+				) {
+					refeching = true;
+					const response = await API.post('/api/auth/refresh/', { refresh: state.auth?.refresh });
+					setState(curr => ({
+						...curr,
+						auth: { access: response.data.access, refresh: curr.auth?.refresh || '' },
+					}));
+					prevRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
+					return axios(prevRequest);
+				} else if (
+					error.response?.status === 401 &&
+					error.response.data.code === 'token_not_valid'
+				) {
+					signOut();
+				}
+
+				const errorFormatted: IError = {
+					detail: error.response?.data?.detail ? error.response?.data.detail : undefined,
+					fields: !error.response?.data?.detail
+						? (error.response?.data as IError['fields'])
+						: undefined,
+					status: error.status,
+				};
+				return Promise.reject(errorFormatted);
+			},
+		);
+
+		return () => {
+			API.interceptors.request.eject(requestInterceptor);
+			API.interceptors.response.eject(responseInterceptor);
+		};
+	}, [state.auth?.access, state.auth?.refresh]);
 
 	return <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>;
 };
