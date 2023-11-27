@@ -15,6 +15,9 @@ interface Resources {
       "unauthorized": "Email or password is not correct.",
       "has-account": "Do you already have an account?. Log in",
       "sign-up": "Sign up"
+    },
+    "pages": {
+      "search": "Search"
     }
   }
 }

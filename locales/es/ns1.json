@@ -14,5 +14,8 @@
 		"unauthorized": "Correo o contraseña incorrectos.",
 		"has-account": "¿Ya tienes una cuenta?. Inicia sesión",
 		"sign-up": "Registrarse"
+	},
+	"pages": {
+		"search": "Buscar"
 	}
 }

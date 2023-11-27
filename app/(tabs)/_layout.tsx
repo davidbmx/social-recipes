@@ -5,7 +5,7 @@ import { useAuthContext } from '../../lib/providers';
 import Text from '../../lib/theme/Text';
 import IconFontAwesome from '../../components/FontAwsome';
 import theme, { Theme } from '../../lib/theme/theme';
-import Touchable from '../../lib/theme/Touchable';
+import i18next from '../../locales/i18next';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -48,6 +48,7 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name="search"
 				options={{
+					headerTitle: i18next.t('pages.search'),
 					title: '',
 					tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
 				}}

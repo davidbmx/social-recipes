@@ -11,7 +11,7 @@ const palette = {
 	greenDark: '#0A906E',
 
 	black: '#0B0B0B',
-	white: '#F0F2F3',
+	white: '#FFF',
 	primary: '#8C6FF7',
 	error: '#cd415e',
 	jordyblue: {
@@ -106,6 +106,7 @@ const theme = createTheme({
 		xl: 75,
 	},
 	spacing: {
+		none: 0,
 		xxs: 4,
 		xs: 6,
 		s: 8,
@@ -186,9 +187,10 @@ const theme = createTheme({
 	},
 	textInputVariants: {
 		normal: {
+			backgroundColor: 'white',
 			borderColor: palette.jordyblue[500],
 			borderWidth: StyleSheet.hairlineWidth,
-			borderRadius: 8,
+			borderRadius: 12,
 			height: 35,
 			fontSize: 16,
 			color: palette.jordyblue[700],
@@ -204,6 +206,17 @@ const theme = createTheme({
 			color: palette.jordyblue[700],
 			padding: 0,
 			paddingBottom: 10,
+		},
+	},
+	cardVariants: {
+		default: {
+			borderRadius: 'l',
+			backgroundColor: 'white',
+			shadowColor: 'alto.500',
+			shadowOpacity: 0.5,
+			shadowRadius: 2,
+			elevation: 10,
+			shadowOffset: { width: 0, height: 1 },
 		},
 	},
 });

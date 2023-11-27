@@ -1,6 +1,7 @@
 import { Link, router } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import Animated, { LightSpeedInLeft } from 'react-native-reanimated';
 
 import Container from '../components/Container';
 import Box from '../lib/theme/Box';
@@ -106,67 +107,73 @@ const AuthForm = () => {
 	};
 
 	return (
-		<Box flex={1} justifyContent={'center'}>
-			<ContainerForm>
-				<Box flex={1} justifyContent={'center'}>
-					<Loading loading={loading} />
-					<Box>
-						<Image source={SIGN_IN} style={{ width: '100%', height: 300 }} resizeMode={'contain'} />
-					</Box>
-					<Box marginTop={'s'}>
-						<Controller
-							control={control}
-							name={'email'}
-							render={({ field: { value, onChange } }) => (
-								<Input
-									label={i18next.t('labels.email')}
-									error={errors.email?.message}
-									keyboardType={'email-address'}
-									textContentType={'emailAddress'}
-									autoCapitalize={'none'}
-									maxLength={150}
-									value={value}
-									onChangeText={onChange}
-								/>
-							)}
-						/>
-					</Box>
-					<Box marginTop={'m'}>
-						<Controller
-							control={control}
-							name={'password'}
-							render={({ field: { value, onChange } }) => (
-								<Input
-									label={i18next.t('labels.password')}
-									error={errors.password?.message}
-									keyboardType={'default'}
-									textContentType={'password'}
-									secureTextEntry={true}
-									value={value}
-									onChangeText={onChange}
-								/>
-							)}
-						/>
-					</Box>
-					<Box marginTop={'m'}>
-						{errorLogin ? (
-							<Text variant={'body'} color={'error'} marginBottom={'m'}>
-								{errorLogin}
-							</Text>
-						) : null}
-						<Button variant={'primary'} onPress={handleSubmit(onSubmit)} padding={'s'}>
-							<Text variant={'buttonPrimary'}>{i18next.t('signin.button-in')}</Text>
-						</Button>
-						<Link href="/sign-up" asChild>
-							<Touchable marginTop={'m'}>
-								<Text variant={'body'} textAlign={'center'}>
-									{i18next.t('signin.no-account')}
+		<Animated.View entering={LightSpeedInLeft} style={{ flex: 1 }}>
+			<Box flex={1} justifyContent={'center'}>
+				<ContainerForm>
+					<Box flex={1} justifyContent={'center'}>
+						<Loading loading={loading} />
+						<Box>
+							<Image
+								source={SIGN_IN}
+								style={{ width: '100%', height: 300 }}
+								resizeMode={'contain'}
+							/>
+						</Box>
+						<Box marginTop={'s'}>
+							<Controller
+								control={control}
+								name={'email'}
+								render={({ field: { value, onChange } }) => (
+									<Input
+										label={i18next.t('labels.email')}
+										error={errors.email?.message}
+										keyboardType={'email-address'}
+										textContentType={'emailAddress'}
+										autoCapitalize={'none'}
+										maxLength={150}
+										value={value}
+										onChangeText={onChange}
+									/>
+								)}
+							/>
+						</Box>
+						<Box marginTop={'m'}>
+							<Controller
+								control={control}
+								name={'password'}
+								render={({ field: { value, onChange } }) => (
+									<Input
+										label={i18next.t('labels.password')}
+										error={errors.password?.message}
+										keyboardType={'default'}
+										textContentType={'password'}
+										secureTextEntry={true}
+										value={value}
+										onChangeText={onChange}
+									/>
+								)}
+							/>
+						</Box>
+						<Box marginTop={'m'}>
+							{errorLogin ? (
+								<Text variant={'body'} color={'error'} marginBottom={'m'}>
+									{errorLogin}
 								</Text>
-							</Touchable>
-						</Link>
+							) : null}
+							<Button variant={'primary'} onPress={handleSubmit(onSubmit)} padding={'s'}>
+								<Text variant={'buttonPrimary'}>{i18next.t('signin.button-in')}</Text>
+							</Button>
+							<Link href="/sign-up" asChild>
+								<Touchable marginTop={'m'}>
+									<Text variant={'body'} textAlign={'center'}>
+										{i18next.t('signin.no-account')}
+									</Text>
+								</Touchable>
+							</Link>
+						</Box>
 					</Box>
-				</Box>
-			</ContainerForm>
-		</Box>
+				</ContainerForm>
+			</Box>
+		</Animated.View>
 	);
 };

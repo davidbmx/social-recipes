@@ -1,4 +1,4 @@
-import { IRecipe, IStep, TRecipeForm, TStepForm } from '../interfaces';
+import { IRecipe, IRecipesParams, IStep, TRecipeForm, TStepForm } from '../interfaces';
 import { IResponseList } from '../interfaces/responseList';
 import API from './API';
 
@@ -6,12 +6,12 @@ export const createRecipe = async (body: TRecipeForm): Promise<IRecipe> => {
 	return await API.post('/api/recipes/', body).then(response => response.data);
 };
 
-export const geRecipe = async (recipeId: number): Promise<IRecipe> => {
-	return await API.post(`/recipes/${recipeId}/`).then(response => response.data);
+export const getRecipe = async (recipeId: number): Promise<IRecipe> => {
+	return await API.get(`/recipes/${recipeId}/`).then(response => response.data);
 };
 
-export const geRecipes = async (recipeId: number): Promise<IResponseList<IRecipe>> => {
-	return await API.post(`/recipes/${recipeId}/`).then(response => response.data);
+export const getRecipes = async (params: IRecipesParams): Promise<IResponseList<IRecipe>> => {
+	return await API.get('/recipes/', { params }).then(response => response.data);
 };
 
 export const updateRecipe = async (recipeId: number, body: TRecipeForm): Promise<IRecipe> => {

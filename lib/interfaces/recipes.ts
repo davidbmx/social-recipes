@@ -1,6 +1,8 @@
+import { IUser } from './user';
+
 export interface IRecipe {
 	id: number;
-	user: string;
+	user: Pick<IUser, 'uid' | 'username' | 'avatar'>;
 	title: string;
 	description: string;
 	dificulty: string;
@@ -13,7 +15,8 @@ export interface IRecipe {
 	visibility: 'EASY' | 'MEDIUM' | 'HARD';
 	steps?: IStep[];
 	ingredients?: IIngredient[];
-	images?: IImageRecipe[];
+	image: string;
+	liked: boolean;
 }
 
 export interface ITag {
@@ -36,10 +39,9 @@ export interface IIngredient {
 	description: string;
 }
 
-export interface IImageRecipe {
-	recipe: number;
-	image: string;
-	is_default: boolean;
+export interface IRecipesParams {
+	page?: number;
+	search?: string;
 }
 
 export type TRecipeForm = Pick<
