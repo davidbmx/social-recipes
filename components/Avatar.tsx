@@ -25,7 +25,7 @@ const Avatar = ({ image, name, size }: { image: string; name: string; size: numb
 
 	return (
 		<Box
-			backgroundColor={'alto.700'}
+			backgroundColor={'jordyblue.500'}
 			width={size}
 			height={size}
 			borderRadius={'xl'}

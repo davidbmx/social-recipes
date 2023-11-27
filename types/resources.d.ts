@@ -18,6 +18,10 @@ interface Resources {
     },
     "pages": {
       "search": "Search"
+    },
+    "recipe": {
+      "preparation": "Instructions",
+      "ingredients": "Ingredients"
     }
   }
 }

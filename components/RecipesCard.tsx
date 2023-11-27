@@ -21,10 +21,12 @@ const RecipesCard = ({ recipe }: { recipe: IRecipe }) => {
 				<Card flexDirection="row" alignItems={'center'} columnGap={'s'} padding={'s'}>
 					<Image source={{ uri: recipe.image }} resizeMode={'contain'} style={style.image} />
 					<Box flex={1} rowGap={'xs'}>
-						<Text>{recipe.title}</Text>
+						<Text variant={'titleSmall'} fontWeight={'bold'}>
+							{recipe.title}
+						</Text>
 						<UserInfo name={recipe.user.username} image={recipe.user.avatar} size={28} />
 					</Box>
-					<Box backgroundColor={'jordyblue.500'} padding={'xs'} borderRadius={'m'}>
+					<Box backgroundColor={'jordyblue.500'} padding={'s'} borderRadius={'m'}>
 						<IconFontAwesome name={'arrow-right'} size={14} color={'jordyblue.50'} />
 					</Box>
 				</Card>
@@ -37,6 +39,7 @@ const style = StyleSheet.create({
 	image: {
 		width: 80,
 		height: 75,
+		borderRadius: 12,
 	},
 });
 

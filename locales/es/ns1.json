@@ -17,5 +17,9 @@
 	},
 	"pages": {
 		"search": "Buscar"
+	},
+	"recipe": {
+		"preparation": "Preparación",
+		"ingredients": "Ingredientes"
 	}
 }
