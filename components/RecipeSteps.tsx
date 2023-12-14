@@ -12,7 +12,11 @@ const RecipeSteps = ({ steps }: { steps: IStep[] }) => {
 			</Text>
 			<Box marginTop="m" flex={1}>
 				{steps.map((item, index) => (
-					<Box key={item.id} borderBottomColor={'alto.200'}>
+					<Box
+						key={item.id}
+						borderBottomColor={'alto.200'}
+						marginBottom={index === steps.length - 1 ? 'none' : 'm'}
+					>
 						<Text variant="titleSmall">
 							<Text variant="titleSmall" fontWeight={'bold'}>
 								{item.step}.

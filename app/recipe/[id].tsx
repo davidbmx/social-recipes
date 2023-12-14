@@ -1,30 +1,40 @@
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import Container from '../../components/Container';
 import Box from '../../lib/theme/Box';
 import Text from '../../lib/theme/Text';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import Touchable from '../../lib/theme/Touchable';
 import { Image } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useRecipe } from '../../lib/hooks/useRecipe';
 import Loading from '../../components/Loading';
 import IconFontAwesome from '../../components/FontAwsome';
-import i18next from '../../locales/i18next';
 import TabButtons from '../../components/TabButtons';
 import RecipeIngredients from '../../components/RecipeIngredients';
 import RecipeSteps from '../../components/RecipeSteps';
 import TabPage from '../../components/TabPage';
+import HeaderRecipe from '../../components/HeaderRecipe';
 
 const RecipePage = () => {
+	const headerRef = useRef<HeaderRecipe>(null);
 	const { id } = useLocalSearchParams();
 	const snapPoints = useMemo(() => ['70%', '100%'], []);
 	const { recipe, loading } = useRecipe(Number(id));
 	const [tab, setTab] = useState(0);
 
+	const handleChangeBottomSheet = (index: number) => {
+		if (index == 1) {
+			headerRef.current?.showHeader();
+		}
+
+		if (index === 0) {
+			headerRef.current?.hiddeHeader();
+		}
+	};
+
 	if (loading && !recipe) {
 		return <Loading loading={true} />;
 	}
-	console.log(recipe);
+
 	return (
 		<Box flex={1}>
 			<Box position={'relative'}>
@@ -40,8 +50,9 @@ const RecipePage = () => {
 					/>
 				</RoundedButton>
 			</Box>
-			<BottomSheet index={0} snapPoints={snapPoints}>
-				<BottomSheetScrollView style={{ backgroundColor: 'white' }}>
+			<BottomSheet index={0} snapPoints={snapPoints} onChange={handleChangeBottomSheet}>
+				<BottomSheetScrollView style={{ backgroundColor: 'white', flex: 1 }}>
+					<HeaderRecipe ref={headerRef} title={'recipe'} />
 					<Box padding={'s'}>
 						<Box flexDirection={'row'} alignItems={'center'} columnGap={'s'}>
 							<Box flex={1}>
@@ -59,7 +70,7 @@ const RecipePage = () => {
 						<Text variant={'body'}>{recipe?.description}</Text>
 						<Box marginTop={'l'}>
 							<TabButtons onChange={setTab} />
-							<Box position="relative" flex={1}>
+							<Box>
 								<TabPage show={tab === 0} index={0}>
 									<RecipeIngredients ingredients={recipe?.ingredients || []} />
 								</TabPage>

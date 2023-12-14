@@ -18,15 +18,8 @@ const RecipeIngredients = ({ ingredients }: { ingredients: IIngredient[] }) => {
 						marginBottom={index === ingredients.length - 1 ? undefined : 'm'}
 						borderBottomColor={'alto.200'}
 					>
-						<Box
-							justifyContent={'center'}
-							alignItems={'center'}
-							borderRadius={'xl'}
-							backgroundColor={'jordyblue.700'}
-							width={28}
-							height={28}
-						>
-							<Text variant="titleSmall" fontWeight={'bold'} color={'jordyblue.100'}>
+						<Box justifyContent={'center'} alignItems={'center'} borderRadius={'xl'} width={50}>
+							<Text variant="titleSmall" fontWeight={'bold'} color={'alto.800'}>
 								{item.quantity}
 							</Text>
 						</Box>

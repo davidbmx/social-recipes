@@ -42,10 +42,14 @@ const TabButtons = ({ onChange }: { onChange: (index: number) => void }) => {
 			onLayout={({ nativeEvent: { layout } }) => (width.current = layout.width)}
 		>
 			<Touchable zIndex={1} flex={1} padding={'m'} alignItems={'center'} onPress={toLeft}>
-				<Text variant={'titleSmall'}>{i18next.t('recipe.ingredients')}</Text>
+				<Text variant={'titleSmall'} fontWeight={'bold'}>
+					{i18next.t('recipe.ingredients')}
+				</Text>
 			</Touchable>
 			<Touchable zIndex={1} flex={1} padding={'m'} alignItems={'center'} onPress={toRight}>
-				<Text variant={'titleSmall'}>{i18next.t('recipe.preparation')}</Text>
+				<Text variant={'titleSmall'} fontWeight={'bold'}>
+					{i18next.t('recipe.preparation')}
+				</Text>
 			</Touchable>
 			<Animated.View style={[style.indicator, animatedStyle]} />
 		</Box>

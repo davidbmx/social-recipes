@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
@@ -13,6 +13,7 @@ const TabPage = ({
 }) => {
 	const offsetWidth = Dimensions.get('screen').width;
 	const offset = useSharedValue(index === 0 ? 0 : offsetWidth);
+	const [hidden, setHidde] = useState(false);
 	const animatedStyle = useAnimatedStyle(() => ({
 		transform: [{ translateX: offset.value }],
 	}));
@@ -20,13 +21,15 @@ const TabPage = ({
 	useEffect(() => {
 		if (show) {
 			offset.value = withTiming(0, { duration: 600 });
+			setHidde(false);
 		} else {
 			offset.value = withTiming(index === 0 ? -offsetWidth : offsetWidth, { duration: 600 });
+			setHidde(true);
 		}
-	}, [show, index]);
+	}, [show]);
 
 	return (
-		<Animated.View style={[{ position: 'absolute', right: 0, left: 0 }, animatedStyle]}>
+		<Animated.View style={[{ display: hidden ? 'none' : 'flex' }, animatedStyle]}>
 			{children}
 		</Animated.View>
 	);
